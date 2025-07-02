@@ -4,6 +4,10 @@ import {
 } from "react-router";
 import RootLayots from "../layouts/RootLayots";
 import Home from "../Pages/Home";
+import AuthLayouts from "../AuthLayouts/AuthLayouts";
+import { BiLogIn } from "react-icons/bi";
+import Login from "../Authentation/Login";
+import Register from "../Authentation/Register";
 
 export const router = createBrowserRouter([
   {
@@ -12,8 +16,26 @@ export const router = createBrowserRouter([
    children:[
     {
       index:true,
-      Component:Home}
+      Component:Home
+    }
     
    ]
   },
+
+
+  {
+    path:'/',
+    Component:AuthLayouts,
+    children:[
+    {
+      path:'login',
+      Component:Login
+    },
+     {
+      path:'register',
+      Component:Register
+    }
+    
+   ]
+  }
 ]);
