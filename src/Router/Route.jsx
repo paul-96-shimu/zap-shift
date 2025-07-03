@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
     {
       path:'coverage',
       Component:Coverage,
-      loader:()=>fetch('/zapshift districte.json')
+      loader:()=>fetch('./zapshift districte.json')
     }
     
    ]
