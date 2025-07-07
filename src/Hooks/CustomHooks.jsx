@@ -1,8 +1,9 @@
-import React, { use } from 'react';
+
 import { AuthContext } from '../Context/AuthContext/AuthContext';
+import { useContext } from 'react';
 
 const CustomHooks = () => {
-    const authInfo = use(AuthContext)
+    const authInfo = useContext(AuthContext)
     return authInfo
 };
 

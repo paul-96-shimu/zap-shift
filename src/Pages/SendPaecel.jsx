@@ -2,13 +2,21 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoaderData } from 'react-router';
 import Swal from 'sweetalert2';
+import UseAxios from '../Hooks/UseAxios';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext/AuthContext';
 
-const SendPaecel = () => {
+
+const SendParcel = () => {
   const [cost, setCost] = useState(null);
   const serviceCenters = useLoaderData() || [];
+  // const { user } = useContext(AuthContext); // ✅ ইউজার ইমেইল পেতে
+  const {user} =useContext (AuthContext)
 
   const { register, handleSubmit, watch, reset, formState: { errors } } = useForm();
   const type = watch("type");
+
+  const axiosSecure = UseAxios();
 
   const calculateCost = (data) => {
     let baseCost = data.type === "document" ? 50 : 100;
@@ -34,18 +42,31 @@ const SendPaecel = () => {
       cancelButtonText: "Cancel"
     }).then((result) => {
       if (result.isConfirmed) {
-        const parcelData = { ...data, creation_date: new Date() };
-        console.log("Parcel Saved:", parcelData);
+        const parcelData = {
+          ...data,
+          creation_date: new Date(),
+          email: user?.email, // ✅ ইউজার ইমেইল যোগ করা হয়েছে
+        };
 
-        Swal.fire("Success!", "Parcel information saved successfully.", "success");
-        reset();
-        setCost(null);
+        axiosSecure.post('/parcels', parcelData)
+          .then(res => {
+            if (res.data.insertedId) {
+              console.log("✅ Parcel inserted with ID:", res.data.insertedId);
+              Swal.fire("Success!", "Parcel information saved successfully.", "success");
+              reset();
+              setCost(null);
+            }
+          })
+          .catch(err => {
+            console.error("❌ Failed to insert parcel:", err);
+            Swal.fire("Error!", "Something went wrong. Try again.", "error");
+          });
       }
     });
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 bg-base-100 rounded-lg shadow">
+    <div className="max-w-4xl mx-auto px-4 py-8 bg-base-100 rounded-lg shadow mt-24 md:mt-32">
       <h2 className="text-3xl font-bold text-center mb-2">Send a Parcel</h2>
       <p className="text-center text-gray-500 mb-6">Fill in the details to send your parcel securely</p>
 
@@ -132,4 +153,4 @@ const SendPaecel = () => {
   );
 };
 
-export default SendPaecel;
+export default SendParcel;

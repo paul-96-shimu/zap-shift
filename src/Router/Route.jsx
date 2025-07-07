@@ -12,7 +12,10 @@ import Coverage from "../Coverage/Coverage";
 
 import SendPaecel from "../Pages/SendPaecel";
 import PrivteRoute from "./PrivteRoute";
-import Sends from "../Pages/Sends";
+
+import DashBoard from "../layouts/DashBoard";
+import Myparcel from "../Pages/Dasboard/Myparcel";
+
 
 export const router = createBrowserRouter([
   {
@@ -57,5 +60,23 @@ export const router = createBrowserRouter([
       }
 
     ]
+  },
+
+  {
+    path:'/dashboard',
+  element:<PrivteRoute>
+    <DashBoard></DashBoard>
+  </PrivteRoute>,
+  children:[
+    {
+
+      path:'myParcels',
+    Component: Myparcel
+    }
+
+  ]
   }
+
+
+  
 ]);
