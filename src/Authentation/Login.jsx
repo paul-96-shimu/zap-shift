@@ -1,16 +1,28 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import Sociallogin from './Sociallogin';
+import CustomHooks from '../Hooks/CustomHooks';
 
 const Login = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm()
 
+    const {signIn} =  CustomHooks ()
+    const locaton = useLocation()
+    const navigate = useNavigate()
+    const from =locaton  .state?.from|| '/'
+
     const onSubmit = (data) => {
-        console.log(data)
+      signIn(data.email, data.password)
+      .then(result =>{
+        console.log(result.user)
+        navigate (from )
+      })
+      .catch(error => console.log(error))
     }
 
+    
     return (
         <div>
                <form onSubmit={handleSubmit(onSubmit)} className="flex justify-center items-center min-h-screen bg-base-100">
