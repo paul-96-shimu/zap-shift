@@ -15,6 +15,14 @@ import PrivteRoute from "./PrivteRoute";
 
 import DashBoard from "../layouts/DashBoard";
 import Myparcel from "../Pages/Dasboard/Myparcel";
+import Payment from "../Pages/Dasboard/Payment/Payment";
+import BeARider from "../Pages/Dasboard/BeARider/BeARider";
+import PendingRiders from "../Pages/Dasboard/PendingRiders/PendingRiders";
+import ActiveRiders from "../Pages/Dasboard/ActiveRiders/ActiveRiders";
+
+import ForBidden from "../Pages/Forbidden/ForBidden";
+import AdminRouter from "./AdminRouter";
+import MakeAdmin from "../Pages/Dasboard/MakeAdmin/MakeAdmin";
 
 
 export const router = createBrowserRouter([
@@ -26,22 +34,43 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home
       },
+
+
+       {
+        path: 'forbidden',
+        Component: ForBidden,
+        loader: () => fetch('./zapshift districte.json')
+      },
+
       {
         path: 'coverage',
         Component: Coverage,
         loader: () => fetch('./zapshift districte.json')
       },
+
+
+
+      {
+        path: 'beARider',
+        element:
+          <PrivteRoute>
+            <BeARider></BeARider>
+          </PrivteRoute>,
+
+        loader: () => fetch('./zapshift districte.json')
+
+      },
       {
         path: 'sendparcel',
         element:
-           <PrivteRoute>
+          <PrivteRoute>
             <SendPaecel></SendPaecel>
           </PrivteRoute>,
-           loader: () => fetch('./zapshift districte.json')
-          },
+        loader: () => fetch('./zapshift districte.json')
+      },
 
 
-    
+
     ]
   },
 
@@ -63,20 +92,51 @@ export const router = createBrowserRouter([
   },
 
   {
-    path:'/dashboard',
-  element:<PrivteRoute>
-    <DashBoard></DashBoard>
-  </PrivteRoute>,
-  children:[
-    {
+    path: '/dashboard',
+    element: <PrivteRoute>
+      <DashBoard></DashBoard>
+    </PrivteRoute>,
+    children: [
+      {
 
-      path:'myParcels',
-    Component: Myparcel
-    }
+        path: 'myParcels',
+        Component: Myparcel
+      },
 
-  ]
+
+      {
+
+        path: "payment/:parcelId",
+        Component: Payment
+      },
+
+      {
+        path: 'pending-riders',
+       
+
+          element:<AdminRouter>
+      <PendingRiders></PendingRiders>
+        </AdminRouter>
+      },
+      {
+        path: 'active-riders',
+    
+
+         element:<AdminRouter>
+        <ActiveRiders></ActiveRiders>
+        </AdminRouter>
+      },
+      {
+        path: 'makeAdmin',
+
+        element:<AdminRouter>
+          <MakeAdmin></MakeAdmin>
+        </AdminRouter>
+      }
+
+    ]
   }
 
 
-  
+
 ]);

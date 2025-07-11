@@ -65,7 +65,7 @@ const Login = () => {
                 {/* Submit Button */}
                 <button className="btn btn-neutral w-full mt-6">Login</button>
                 <div className='text-center'>
-                     <p ><small>New to this website? <Link className='btn btn-link' to='/register'> Register
+                     <p ><small>New to this website? <Link state={{ from } } className='btn btn-link' to='/register'> Register
                 </Link></small></p>
                 <Sociallogin></Sociallogin>
                 </div>
